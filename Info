@@ -1,0 +1,5 @@
+Infos:
+
+Score errechnet sich wie folgt: 
+	score = score + summe aller zusammen gezählten ergebnisse die in einen zug passiert sind
+	
