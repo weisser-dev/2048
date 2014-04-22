@@ -16,10 +16,8 @@ public class MainClass {
 	}
 
 	private void initView() {
-
 		GameView view = new GameView();
 		view.setVisible(true);
 
 	}
-
 }

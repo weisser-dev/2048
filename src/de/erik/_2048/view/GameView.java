@@ -51,7 +51,7 @@ public class GameView extends javax.swing.JFrame {
 		this.panelHeadTop = new JPanel();
 		this.panelHeadBottom = new JPanel();
 		this.panelScore = new ScoreGroupPanel();
-		this.panelGame = new GamePanel();
+		this.panelGame = new GamePanel(this.panelScore);
 
 	}
 
@@ -67,7 +67,7 @@ public class GameView extends javax.swing.JFrame {
 			gbc.weightx = 0;
 			gbc.weighty = 0;
 			gbc.insets = new Insets(-10, 0, -15, 0);
-			panelHeadTop.add(labelTitle, gbc);
+			this.panelHeadTop.add(this.labelTitle, gbc);
 
 			gbc.gridx = 1;
 			gbc.gridy = 0;
@@ -75,7 +75,7 @@ public class GameView extends javax.swing.JFrame {
 			gbc.weightx = 1;
 			gbc.weighty = 0;
 			gbc.insets = new Insets(0, 0, 0, 0);
-			panelHeadTop.add(new Spacer(), gbc);
+			this.panelHeadTop.add(new Spacer(), gbc);
 
 			gbc.gridx = 2;
 			gbc.gridy = 0;
@@ -83,9 +83,9 @@ public class GameView extends javax.swing.JFrame {
 			gbc.weightx = 0;
 			gbc.weighty = 0;
 			gbc.insets = new Insets(0, 0, 0, 0);
-			panelScore.setMinimumSize(new Dimension(280, 0));
-			panelScore.setPreferredSize(new Dimension(280, 0));
-			panelHeadTop.add(panelScore, gbc);
+			this.panelScore.setMinimumSize(new Dimension(280, 0));
+			this.panelScore.setPreferredSize(new Dimension(280, 0));
+			this.panelHeadTop.add(this.panelScore, gbc);
 		}
 
 		this.panelHeadBottom.setLayout(new GridBagLayout());
@@ -99,7 +99,7 @@ public class GameView extends javax.swing.JFrame {
 			gbc.weightx = 1;
 			gbc.weighty = 0;
 			gbc.insets = new Insets(3, 0, 0, 3);
-			panelHeadBottom.add(labelDescription, gbc);
+			this.panelHeadBottom.add(this.labelDescription, gbc);
 
 			gbc.gridx = 1;
 			gbc.gridy = 0;
@@ -107,7 +107,7 @@ public class GameView extends javax.swing.JFrame {
 			gbc.weightx = 0;
 			gbc.weighty = 0;
 			gbc.insets = new Insets(3, 3, 0, 0);
-			panelHeadBottom.add(buttonNewGame, gbc);
+			this.panelHeadBottom.add(this.buttonNewGame, gbc);
 		}
 
 		this.setLayout(new GridBagLayout());
@@ -121,7 +121,7 @@ public class GameView extends javax.swing.JFrame {
 			gbc.weightx = 0;
 			gbc.weighty = 0;
 			gbc.insets = new Insets(0, 0, 5, 0);
-			this.add(panelHeadTop, gbc);
+			this.add(this.panelHeadTop, gbc);
 
 			gbc.gridx = 0;
 			gbc.gridy = 1;
@@ -129,7 +129,7 @@ public class GameView extends javax.swing.JFrame {
 			gbc.weightx = 0;
 			gbc.weighty = 0;
 			gbc.insets = new Insets(5, 0, 5, 0);
-			this.add(panelHeadBottom, gbc);
+			this.add(this.panelHeadBottom, gbc);
 
 			gbc.gridx = 0;
 			gbc.gridy = 2;
@@ -137,7 +137,7 @@ public class GameView extends javax.swing.JFrame {
 			gbc.weightx = 0;
 			gbc.weighty = 1;
 			gbc.insets = new Insets(25, 0, 0, 0);
-			this.add(panelGame, gbc);
+			this.add(this.panelGame, gbc);
 		}
 
 	}
@@ -147,13 +147,13 @@ public class GameView extends javax.swing.JFrame {
 		this.configJLabel();
 
 		this.getContentPane().setBackground(
-				Color.decode(PropertiesLoader.getInstance().PROPERTIES
+				Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
 						.getProperty("color_background_gameView")));
 
 		this.setPreferredSize(new Dimension(700, 700));
 		this.setMinimumSize(new Dimension(550, 650));
 
-		panelHeadBottom.setOpaque(false);
+		this.panelHeadBottom.setOpaque(false);
 		this.panelHeadTop.setOpaque(false);
 
 		this.setLocationRelativeTo(null);
@@ -166,14 +166,15 @@ public class GameView extends javax.swing.JFrame {
 		this.labelDescription
 				.setText("<html>Join the numbers and get to the <b>2048 tile!</b></html>");
 
-		this.labelDescription.setForeground(Color.decode(PropertiesLoader.getInstance().PROPERTIES
-				.getProperty("color_jlabel_text")));
-		this.labelTitle.setForeground(Color.decode(PropertiesLoader.getInstance().PROPERTIES
+		this.labelDescription
+				.setForeground(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
+						.getProperty("color_jlabel_text")));
+		this.labelTitle.setForeground(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
 				.getProperty("color_jlabel_text")));
 
-		labelTitle.setFont(new Font(PropertiesLoader.getInstance().PROPERTIES
+		this.labelTitle.setFont(new Font(PropertiesLoader.getInstance().VIEW_PROPERTIES
 				.getProperty("default_font"), Font.BOLD, 80));
-		labelDescription.setFont(new Font(PropertiesLoader.getInstance().PROPERTIES
+		this.labelDescription.setFont(new Font(PropertiesLoader.getInstance().VIEW_PROPERTIES
 				.getProperty("default_font"), Font.PLAIN, 18));
 
 	}

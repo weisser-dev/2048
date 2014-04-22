@@ -42,7 +42,7 @@ public class ScoreGroupPanel extends JPanel {
 		gbc.weightx = 1;
 		gbc.weighty = 0;
 		gbc.insets = new Insets(0, 0, 0, 3);
-		this.add(labelCurrentScore, gbc);
+		this.add(this.labelCurrentScore, gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 0;
@@ -50,7 +50,7 @@ public class ScoreGroupPanel extends JPanel {
 		gbc.weightx = 1;
 		gbc.weighty = 0;
 		gbc.insets = new Insets(0, 3, 0, 0);
-		this.add(labelHighScore, gbc);
+		this.add(this.labelHighScore, gbc);
 
 	}
 
@@ -58,12 +58,28 @@ public class ScoreGroupPanel extends JPanel {
 
 		this.labelCurrentScore.setTitle("SCORE");
 		this.labelHighScore.setTitle("BEST");
-		this.labelHighScore.setScore(PropertiesLoader.getInstance().PROPERTIES
+		this.labelHighScore.setScore(PropertiesLoader.getInstance().GAME_PROPERTIES
 				.getProperty("highscore"));
 		this.labelCurrentScore.setScore("0");
 
 		this.setOpaque(false);
 
+	}
+
+	public ScorePanel getLabelCurrentScore() {
+		return this.labelCurrentScore;
+	}
+
+	public void setLabelCurrentScore(ScorePanel labelCurrentScore) {
+		this.labelCurrentScore = labelCurrentScore;
+	}
+
+	public ScorePanel getLabelHighScore() {
+		return this.labelHighScore;
+	}
+
+	public void setLabelHighScore(ScorePanel labelHighScore) {
+		this.labelHighScore = labelHighScore;
 	}
 
 }

@@ -31,7 +31,7 @@ public class GameButton extends JLabel {
 		this.setHorizontalAlignment(SwingConstants.CENTER);
 		this.setVerticalAlignment(SwingConstants.CENTER);
 
-		this.setForeground(Color.decode(PropertiesLoader.getInstance().PROPERTIES
+		this.setForeground(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
 				.getProperty("color_gameButton_text")));
 
 	}
@@ -42,7 +42,7 @@ public class GameButton extends JLabel {
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HBGR);
 
-		g.setColor(Color.decode(PropertiesLoader.getInstance().PROPERTIES
+		g.setColor(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
 				.getProperty("color_background_gameButton")));
 		g.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 6, 6);
 

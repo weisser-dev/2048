@@ -18,6 +18,7 @@ public class ScorePanel extends JPanel {
 
 	private JLabel labelTitle;
 	private JLabel labelScore;
+	private int score;
 
 	private static final long serialVersionUID = 7468367842801315073L;
 
@@ -28,8 +29,8 @@ public class ScorePanel extends JPanel {
 	}
 
 	private void init() {
-		labelTitle = new JLabel();
-		labelScore = new JLabel();
+		this.labelTitle = new JLabel();
+		this.labelScore = new JLabel();
 
 	}
 
@@ -43,23 +44,23 @@ public class ScorePanel extends JPanel {
 		gbc.gridwidth = 1;
 		gbc.gridheight = 1;
 		gbc.insets = new Insets(5, 0, 0, 0);
-		this.add(labelTitle, gbc);
+		this.add(this.labelTitle, gbc);
 
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.gridwidth = 1;
 		gbc.gridheight = 1;
 		gbc.insets = new Insets(-5, 0, 0, 0);
-		this.add(labelScore, gbc);
+		this.add(this.labelScore, gbc);
 
 	}
 	private void config() {
-		labelTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		labelScore.setHorizontalAlignment(SwingConstants.CENTER);
+		this.labelTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		this.labelScore.setHorizontalAlignment(SwingConstants.CENTER);
 
-		labelTitle.setForeground(Color.decode(PropertiesLoader.getInstance().PROPERTIES
+		this.labelTitle.setForeground(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
 				.getProperty("color_scorePanel_textTitle")));
-		labelScore.setForeground(Color.WHITE);
+		this.labelScore.setForeground(Color.WHITE);
 		//
 		this.setOpaque(false);
 	}
@@ -71,7 +72,7 @@ public class ScorePanel extends JPanel {
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HBGR);
 
-		g.setColor(Color.decode(PropertiesLoader.getInstance().PROPERTIES
+		g.setColor(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
 				.getProperty("color_background_scoreLabel")));
 		g.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 4, 4);
 
@@ -84,8 +85,13 @@ public class ScorePanel extends JPanel {
 	}
 
 	public void setScore(String score) {
+		this.score = Integer.valueOf(score);
 		this.labelScore.setText("<html> <body style=\"font-size:22px; margin-top: -3px \">" + score
 				+ "</html>");
+	}
+
+	public Integer getScore() {
+		return this.score;
 	}
 
 }
