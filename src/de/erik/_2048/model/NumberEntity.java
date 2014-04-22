@@ -1,11 +1,17 @@
 package de.erik._2048.model;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 
 import de.erik._2048.utils.PropertiesLoader;
 
 public class NumberEntity {
+
+	public static final int FIELD_SIZE = 105;
+	public static final int BORDER_SIZE = 16;
+	public static final Font FONT = new Font("Segoe UI", Font.BOLD, 35);
 
 	private int x;
 	private int y;
@@ -15,15 +21,17 @@ public class NumberEntity {
 	private int value;
 	private boolean alive;
 
+	private Color background;
+
 	public NumberEntity(int x, int y, int value) {
 		this.x = x;
 		this.y = y;
-		this.value = value;
 		this.alive = true;
-		this.sx = this.x * 121;
-		this.sy = this.y * 121;
-	}
+		this.sx = this.calculateX();
+		this.sy = this.calculateY();
 
+		this.updateValue(value);
+	}
 	/**
 	 * @param alive the alive to set
 	 */
@@ -43,61 +51,8 @@ public class NumberEntity {
 		g.setColor(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
 				.getProperty("color_background_gameField")));
 
-		Color background;
-		Color font;
-
-		switch (this.value) {
-			case 2:
-				background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("2"));
-				break;
-			case 4:
-				background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("4"));
-				break;
-			case 8:
-				background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("8"));
-				break;
-			case 16:
-				background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("16"));
-				break;
-			case 32:
-				background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("32"));
-				break;
-			case 64:
-				background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("64"));
-				break;
-			case 128:
-				background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("128"));
-				break;
-			case 256:
-				background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("256"));
-				break;
-			case 512:
-				background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("512"));
-				break;
-			case 1024:
-				background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("1024"));
-				break;
-			case 2048:
-				background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("2048"));
-				break;
-			default:
-				background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("0"));
-				break;
-		}
-		g.setColor(background);
-		g.fillRoundRect(this.sx + 16, this.sy + 16, 105, 105, 10, 10);
+		g.setColor(this.background);
+		g.fillRoundRect(this.sx, this.sy, 105, 105, 10, 10);
 		if (this.value <= 4) {
 			g.setColor(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
 					.getProperty("font_color_1")));
@@ -105,31 +60,57 @@ public class NumberEntity {
 			g.setColor(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
 					.getProperty("font_color_2")));
 		}
-		g.drawString(String.valueOf(this.value), this.sx + 20, this.sy + 20);
-	}
 
+		if (this.value > 0) {
+			g.setFont(NumberEntity.FONT);
+			String text = String.valueOf(this.value);
+			Rectangle2D textBounds = g.getFontMetrics().getStringBounds(text, g);
+			g.drawString(text, (int) (this.sx + ((105 / 2) - textBounds.getCenterX())),
+					(int) (this.sy + ((105 / 2) - textBounds.getCenterY())));
+		}
+	}
 	public boolean updatePosition() {
 		boolean moved = false;
 
-		if (this.sx < (this.x * 121)) {
+		int targetX = this.calculateX();
+		int targetY = this.calculateY();
+
+		if (this.sx < targetX) {
 			++this.sx;
 			moved = true;
 		}
-		if (this.sx > (this.x * 121)) {
+		if (this.sx > targetX) {
 			--this.sx;
 			moved = true;
 		}
-		if (this.sy < (this.y * 121)) {
+		if (this.sy < targetY) {
 			++this.sy;
 			moved = true;
 		}
-		if (this.sy > (this.y * 121)) {
+		if (this.sy > targetY) {
 			--this.sy;
 			moved = true;
 		}
 
 		return moved;
 	}
+
+	/**
+	 * @return
+	 */
+	private int calculateX() {
+		return (this.x * (NumberEntity.FIELD_SIZE + NumberEntity.BORDER_SIZE))
+				+ NumberEntity.BORDER_SIZE;
+	}
+
+	/**
+	 * @return
+	 */
+	private int calculateY() {
+		return (this.y * (NumberEntity.FIELD_SIZE + NumberEntity.BORDER_SIZE))
+				+ NumberEntity.BORDER_SIZE;
+	}
+
 	public int getX() {
 		return this.x;
 	}
@@ -146,28 +127,63 @@ public class NumberEntity {
 		this.y = y;
 	}
 
-	public int getSx() {
-		return this.sx;
-	}
-
-	public void setSx(int sx) {
-		this.sx = sx;
-	}
-
-	public int getSy() {
-		return this.sy;
-	}
-
-	public void setSy(int sy) {
-		this.sy = sy;
-	}
-
 	public int getValue() {
 		return this.value;
 	}
 
-	public void setValue(int value) {
+	public void updateValue(int value) {
 		this.value = value;
+
+		switch (this.value) {
+			case 2:
+				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
+						.getProperty("2"));
+				break;
+			case 4:
+				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
+						.getProperty("4"));
+				break;
+			case 8:
+				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
+						.getProperty("8"));
+				break;
+			case 16:
+				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
+						.getProperty("16"));
+				break;
+			case 32:
+				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
+						.getProperty("32"));
+				break;
+			case 64:
+				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
+						.getProperty("64"));
+				break;
+			case 128:
+				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
+						.getProperty("128"));
+				break;
+			case 256:
+				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
+						.getProperty("256"));
+				break;
+			case 512:
+				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
+						.getProperty("512"));
+				break;
+			case 1024:
+				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
+						.getProperty("1024"));
+				break;
+			case 2048:
+				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
+						.getProperty("2048"));
+				break;
+			default:
+				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
+						.getProperty("0"));
+				break;
+		}
 	}
 
 }

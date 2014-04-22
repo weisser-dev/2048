@@ -125,47 +125,64 @@ public class GamePanel extends JPanel implements KeyListener {
 	}
 
 	private void moveEntity(KeyEvent e) {
-		boolean move = false;
+		boolean moved = false;
 
 		do {
-			move = false;
+			moved = false;
 			if (e.getKeyCode() == KeyEvent.VK_UP) {
-				for (NumberEntity numberEntity : this.listEntities) {
-					while ((this.getEntityAt(numberEntity.getX(), numberEntity.getY() - 1) == null)
-							&& (numberEntity.getY() > 0)) {
-						numberEntity.setY(numberEntity.getY() - 1);
-						move = true;
-					}
-				}
-
+				moved = this.moveAction(0, -1);
 			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				for (NumberEntity numberEntity : this.listEntities) {
-					while ((this.getEntityAt(numberEntity.getX(), numberEntity.getY() + 1) == null)
-							&& (numberEntity.getY() < 3)) {
-						numberEntity.setY(numberEntity.getY() + 1);
-						move = true;
-					}
-				}
+				moved = this.moveAction(0, 1);
+				//				for (NumberEntity numberEntity : this.listEntities) {
+				//					while ((this.getEntityAt(numberEntity.getX(), numberEntity.getY() + 1) == null)
+				//							&& (numberEntity.getY() < 3)) {
+				//						numberEntity.setY(numberEntity.getY() + 1);
+				//						moved = true;
+				//					}
+				//				}
 			} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-				for (NumberEntity numberEntity : this.listEntities) {
-					while ((this.getEntityAt(numberEntity.getX() - 1, numberEntity.getY()) == null)
-							&& (numberEntity.getX() > 0)) {
-						numberEntity.setX(numberEntity.getX() - 1);
-						move = true;
-					}
-				}
+				moved = this.moveAction(-1, 0);
+				//				for (NumberEntity numberEntity : this.listEntities) {
+				//					while ((this.getEntityAt(numberEntity.getX() - 1, numberEntity.getY()) == null)
+				//							&& (numberEntity.getX() > 0)) {
+				//						numberEntity.setX(numberEntity.getX() - 1);
+				//						moved = true;
+				//					}
+				//				}
 			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-				for (NumberEntity numberEntity : this.listEntities) {
-					while ((this.getEntityAt(numberEntity.getX() + 1, numberEntity.getY()) == null)
-							&& (numberEntity.getX() < 3)) {
-						numberEntity.setX(numberEntity.getX() + 1);
-						move = true;
-					}
-				}
+				moved = this.moveAction(1, 0);
+				//				for (NumberEntity numberEntity : this.listEntities) {
+				//					while ((this.getEntityAt(numberEntity.getX() + 1, numberEntity.getY()) == null)
+				//							&& (numberEntity.getX() < 3)) {
+				//						numberEntity.setX(numberEntity.getX() + 1);
+				//						moved = true;
+				//					}
+				//				}
 			}
-		} while (move);
+		} while (moved);
 	}
 
+	/**
+	 * @param moved
+	 * @return
+	 */
+	private boolean moveAction(int x, int y) {
+		boolean moved = false;
+		for (NumberEntity numberEntity : this.listEntities) {
+			while ((this.getEntityAt(numberEntity.getX() + x, numberEntity.getY() + y) == null)) {
+				if (((x > 0) && (numberEntity.getX() < 3))
+						|| ((x < 0) && (numberEntity.getX() > 0))) {
+					numberEntity.setX(numberEntity.getX() + x);
+					moved = true;
+				} else if (((y < 0) && (numberEntity.getY() < 3))
+						|| ((y > 0) && (numberEntity.getY() > 0))) {
+					numberEntity.setY(numberEntity.getY() + y);
+					moved = true;
+				}
+			}
+		}
+		return moved;
+	}
 	public boolean isAddition() {
 		for (int x = 0; x <= 3; x++) {
 			for (int y = 0; y < 3; y++) {
@@ -226,7 +243,7 @@ public class GamePanel extends JPanel implements KeyListener {
 					if ((currentEntity != null) && (belowEntity != null)
 							&& (belowEntity.getValue() == currentEntity.getValue())) {
 						currentEntity.setAlive(false);
-						belowEntity.setValue(currentEntity.getValue() * 2);
+						belowEntity.updateValue(currentEntity.getValue() * 2);
 						belowEntity.setY(belowEntity.getY() - 1);
 						this.score += belowEntity.getValue();
 					}
@@ -241,7 +258,7 @@ public class GamePanel extends JPanel implements KeyListener {
 					if ((currentEntity != null) && (belowEntity != null)
 							&& (belowEntity.getValue() == currentEntity.getValue())) {
 						currentEntity.setAlive(false);
-						belowEntity.setValue(currentEntity.getValue() * 2);
+						belowEntity.updateValue(currentEntity.getValue() * 2);
 						belowEntity.setY(belowEntity.getY() + 1);
 						this.score += belowEntity.getValue();
 					}
@@ -256,7 +273,7 @@ public class GamePanel extends JPanel implements KeyListener {
 					if ((currentEntity != null) && (belowEntity != null)
 							&& (belowEntity.getValue() == currentEntity.getValue())) {
 						currentEntity.setAlive(false);
-						belowEntity.setValue(currentEntity.getValue() * 2);
+						belowEntity.updateValue(currentEntity.getValue() * 2);
 						belowEntity.setX(belowEntity.getX() - 1);
 						this.score += belowEntity.getValue();
 					}
@@ -271,7 +288,7 @@ public class GamePanel extends JPanel implements KeyListener {
 					if ((currentEntity != null) && (belowEntity != null)
 							&& (belowEntity.getValue() == currentEntity.getValue())) {
 						currentEntity.setAlive(false);
-						belowEntity.setValue(currentEntity.getValue() * 2);
+						belowEntity.updateValue(currentEntity.getValue() * 2);
 						belowEntity.setX(belowEntity.getX() + 1);
 						this.score += belowEntity.getValue();
 					}
