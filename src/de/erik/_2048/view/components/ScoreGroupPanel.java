@@ -6,8 +6,6 @@ import java.awt.Insets;
 
 import javax.swing.JPanel;
 
-import de.erik._2048.utils.PropertiesLoader;
-
 public class ScoreGroupPanel extends JPanel {
 
 	/**
@@ -58,8 +56,7 @@ public class ScoreGroupPanel extends JPanel {
 
 		this.labelCurrentScore.setTitle("SCORE");
 		this.labelHighScore.setTitle("BEST");
-		this.labelHighScore.setScore(Integer.valueOf(PropertiesLoader.getInstance().GAME_PROPERTIES
-				.getProperty("highscore")));
+		this.labelHighScore.setScore(0);
 		this.labelCurrentScore.setScore(0);
 
 		this.setOpaque(false);

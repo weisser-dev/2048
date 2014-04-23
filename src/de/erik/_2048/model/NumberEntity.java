@@ -5,8 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import de.erik._2048.utils.PropertiesLoader;
-
 public class NumberEntity {
 
 	public static final int FIELD_SIZE = 105;
@@ -48,17 +46,12 @@ public class NumberEntity {
 
 	public void paint(Graphics2D g) {
 
-		g.setColor(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-				.getProperty("color_background_gameField")));
-
 		g.setColor(this.background);
 		g.fillRoundRect(this.sx, this.sy, 105, 105, 10, 10);
 		if (this.value <= 4) {
-			g.setColor(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-					.getProperty("font_color_1")));
+			g.setColor(GameConstants.COLOR_NUMBER_ENTITY_FONT1);
 		} else {
-			g.setColor(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-					.getProperty("font_color_2")));
+			g.setColor(GameConstants.COLOR_NUMBER_ENTITY_FONT2);
 		}
 
 		if (this.value > 0) {
@@ -136,52 +129,40 @@ public class NumberEntity {
 
 		switch (this.value) {
 			case 2:
-				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("2"));
+				this.background = GameConstants.COLOR_VALUE_2;
 				break;
 			case 4:
-				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("4"));
+				this.background = GameConstants.COLOR_VALUE_4;
 				break;
 			case 8:
-				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("8"));
+				this.background = GameConstants.COLOR_VALUE_8;
 				break;
 			case 16:
-				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("16"));
+				this.background = GameConstants.COLOR_VALUE_16;
 				break;
 			case 32:
-				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("32"));
+				this.background = GameConstants.COLOR_VALUE_32;
 				break;
 			case 64:
-				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("64"));
+				this.background = GameConstants.COLOR_VALUE_64;
 				break;
 			case 128:
-				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("128"));
+				this.background = GameConstants.COLOR_VALUE_128;
 				break;
 			case 256:
-				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("256"));
+				this.background = GameConstants.COLOR_VALUE_256;
 				break;
 			case 512:
-				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("512"));
+				this.background = GameConstants.COLOR_VALUE_512;
 				break;
 			case 1024:
-				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("1024"));
+				this.background = GameConstants.COLOR_VALUE_1024;
 				break;
 			case 2048:
-				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("2048"));
+				this.background = GameConstants.COLOR_VALUE_2048;
 				break;
 			default:
-				this.background = Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("0"));
+				this.background = GameConstants.COLOR_VALUE_0;
 				break;
 		}
 	}

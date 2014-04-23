@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import de.erik._2048.utils.PropertiesLoader;
+import de.erik._2048.model.GameConstants;
 
 public class ScorePanel extends JPanel {
 
@@ -58,8 +58,7 @@ public class ScorePanel extends JPanel {
 		this.labelTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		this.labelScore.setHorizontalAlignment(SwingConstants.CENTER);
 
-		this.labelTitle.setForeground(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-				.getProperty("color_scorePanel_textTitle")));
+		this.labelTitle.setForeground(GameConstants.COLOR_SCOREPANEL_TITLE_FONT);
 		this.labelScore.setForeground(Color.WHITE);
 		//
 		this.setOpaque(false);
@@ -72,8 +71,7 @@ public class ScorePanel extends JPanel {
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HBGR);
 
-		g.setColor(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-				.getProperty("color_background_scoreLabel")));
+		g.setColor(GameConstants.COLOR_background_scoreLabel);
 		g.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 4, 4);
 
 		super.paintComponents(g);

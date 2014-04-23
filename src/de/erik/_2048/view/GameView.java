@@ -1,6 +1,5 @@
 package de.erik._2048.view;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -11,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import de.erik._2048.utils.PropertiesLoader;
+import de.erik._2048.model.GameConstants;
 import de.erik._2048.view.components.GameButton;
 import de.erik._2048.view.components.GamePanel;
 import de.erik._2048.view.components.ScoreGroupPanel;
@@ -146,12 +145,12 @@ public class GameView extends javax.swing.JFrame {
 		this.setTitle("2048_-_V1.0a");
 		this.configJLabel();
 
-		this.getContentPane().setBackground(
-				Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("color_background_gameView")));
+		this.getContentPane().setBackground(GameConstants.COLOR_background_gameView);
 
 		this.setPreferredSize(new Dimension(700, 700));
 		this.setMinimumSize(new Dimension(550, 650));
+
+		this.buttonNewGame.setGamePanel(this.panelGame);
 
 		this.panelHeadBottom.setOpaque(false);
 		this.panelHeadTop.setOpaque(false);
@@ -166,16 +165,11 @@ public class GameView extends javax.swing.JFrame {
 		this.labelDescription
 				.setText("<html>Join the numbers and get to the <b>2048 tile!</b></html>");
 
-		this.labelDescription
-				.setForeground(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-						.getProperty("color_jlabel_text")));
-		this.labelTitle.setForeground(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-				.getProperty("color_jlabel_text")));
+		this.labelDescription.setForeground(GameConstants.COLOR_JLABEL_FONT);
+		this.labelTitle.setForeground(GameConstants.COLOR_JLABEL_FONT);
 
-		this.labelTitle.setFont(new Font(PropertiesLoader.getInstance().VIEW_PROPERTIES
-				.getProperty("default_font"), Font.BOLD, 80));
-		this.labelDescription.setFont(new Font(PropertiesLoader.getInstance().VIEW_PROPERTIES
-				.getProperty("default_font"), Font.PLAIN, 18));
+		this.labelTitle.setFont(new Font(GameConstants.FONT_default, Font.BOLD, 80));
+		this.labelDescription.setFont(new Font(GameConstants.FONT_default, Font.PLAIN, 18));
 
 	}
 

@@ -42,6 +42,9 @@ public class MoveThread extends Thread {
 		}
 
 		this.panel.getListEntities().removeAll(deadEntities);
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {}
 		NumberEntity temp = this.panel.generateNewEntity();
 		if (temp != null) {
 			this.panel.getListEntities().add(this.panel.generateNewEntity());

@@ -1,14 +1,11 @@
 package de.erik._2048.view.components;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -16,9 +13,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JPanel;
 
+import de.erik._2048.model.GameConstants;
 import de.erik._2048.model.NumberEntity;
 import de.erik._2048.threading.MoveThread;
-import de.erik._2048.utils.PropertiesLoader;
 
 public class GamePanel extends JPanel implements KeyListener {
 
@@ -30,6 +27,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	private List<NumberEntity> listEntities;
 	private List<NumberEntity> emptyEntities;
 	private ScoreGroupPanel panelScore;
+	private GameOverPanel gameOverPanel;
 	private int score;
 
 	public GamePanel(ScoreGroupPanel panelScore) {
@@ -43,6 +41,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	private void init() {
 
 		this.generateField();
+		this.gameOverPanel = new GameOverPanel(this);
 	}
 
 	private void generateField() {
@@ -62,11 +61,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	}
 	public void build() {
 		this.setLayout(null);
-
-		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 499, 499);
-		panel.setBackground(new Color(238, 228, 218, 175));
-		this.add(new GameOverPanel(this));
+		this.add(this.gameOverPanel);
 
 	}
 	@Override
@@ -77,8 +72,7 @@ public class GamePanel extends JPanel implements KeyListener {
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HBGR);
 
-		g.setColor(Color.decode(PropertiesLoader.getInstance().VIEW_PROPERTIES
-				.getProperty("color_background_gamePanel")));
+		g.setColor(GameConstants.COLOR_gamePanel);
 		g.fillRoundRect(0, 0, 499, 499, 15, 15);
 
 		for (NumberEntity numberEntity : this.emptyEntities) {
@@ -99,6 +93,7 @@ public class GamePanel extends JPanel implements KeyListener {
 		this.setOpaque(false);
 		this.setFocusable(true);
 		this.addKeyListener(this);
+		this.gameOverPanel.setVisible(false);
 	}
 
 	public List<NumberEntity> getListEntities() {
@@ -322,50 +317,24 @@ public class GamePanel extends JPanel implements KeyListener {
 
 	public void setGameOver(boolean gameOver) {
 		if (gameOver) {
-			this.setGameOverPane();
 			this.saveHighscore();
-
-			System.out.println("test");
-
+			this.gameOverPanel.setVisible(true);
 		}
-	}
-	/**
-	 * 
-	 */
-	private void setGameOverPane() {
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(10, 10, 10, 10));
-		this.add(panel);
-		this.repaint();
 	}
 
 	/**
 	 * 
 	 */
 	private void saveHighscore() {
-		if (this.panelScore.getLabelHighScore().getScore() < this.panelScore.getLabelCurrentScore()
-				.getScore()) {
-			try {
-				this.panelScore.getLabelHighScore().setScore(
-						this.panelScore.getLabelCurrentScore().getScore());
-				FileOutputStream fos = new FileOutputStream(
-						"src/de/erik/_2048/resources/game.properties");
-
-				PropertiesLoader.getInstance().GAME_PROPERTIES.put("highscore",
-						String.valueOf(this.panelScore.getLabelCurrentScore().getScore()));
-				PropertiesLoader.getInstance().GAME_PROPERTIES.store(fos, "Save Highscore");
-				fos.flush();
-				fos.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		if (this.panelScore.getLabelHighScore().getScore() < this.score) {
+			this.panelScore.getLabelHighScore().setScore(this.score);
 		}
 	}
-
 	public void restart() {
 		this.saveHighscore();
-		this.panelScore.getLabelCurrentScore().setScore(0);
+		this.score = 0;
 		this.generateField();
+		this.gameOverPanel.setVisible(false);
 		this.repaint();
 
 	}
