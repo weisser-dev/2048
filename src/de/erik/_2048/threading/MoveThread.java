@@ -30,7 +30,7 @@ public class MoveThread extends Thread {
 			}
 			try {
 				this.panel.repaint();
-				Thread.sleep(1);
+				Thread.sleep(2);
 			} catch (InterruptedException e) {}
 		}
 
@@ -45,8 +45,10 @@ public class MoveThread extends Thread {
 		NumberEntity temp = this.panel.generateNewEntity();
 		if (temp != null) {
 			this.panel.getListEntities().add(this.panel.generateNewEntity());
-		} else if (!this.panel.isAddition()) {
-			System.out.println("GameOver");
+			if (this.panel.isGameOver()) {
+				this.panel.setGameOver(true);
+			}
+		} else if (this.panel.isGameOver()) {
 			this.panel.setGameOver(true);
 		}
 		this.panel.repaint();

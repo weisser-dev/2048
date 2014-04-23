@@ -46,7 +46,7 @@ public class GameView extends javax.swing.JFrame {
 		this.labelTitle = new JLabel();
 		this.labelDescription = new JLabel();
 
-		this.buttonNewGame = new GameButton();
+		this.buttonNewGame = new GameButton("New Game");
 
 		this.panelHeadTop = new JPanel();
 		this.panelHeadBottom = new JPanel();

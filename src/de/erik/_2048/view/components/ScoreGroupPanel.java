@@ -58,9 +58,9 @@ public class ScoreGroupPanel extends JPanel {
 
 		this.labelCurrentScore.setTitle("SCORE");
 		this.labelHighScore.setTitle("BEST");
-		this.labelHighScore.setScore(PropertiesLoader.getInstance().GAME_PROPERTIES
-				.getProperty("highscore"));
-		this.labelCurrentScore.setScore("0");
+		this.labelHighScore.setScore(Integer.valueOf(PropertiesLoader.getInstance().GAME_PROPERTIES
+				.getProperty("highscore")));
+		this.labelCurrentScore.setScore(0);
 
 		this.setOpaque(false);
 

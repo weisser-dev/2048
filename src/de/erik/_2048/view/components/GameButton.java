@@ -18,12 +18,12 @@ public class GameButton extends JLabel {
 	 */
 	private static final long serialVersionUID = 825688356307799280L;
 
-	public GameButton() {
+	public GameButton(String title) {
+		this.setText(title);
 		this.config();
 	}
 
 	private void config() {
-		this.setText("New Game");
 		Dimension size = new Dimension(130, 40);
 		this.setPreferredSize(size);
 		this.setMinimumSize(size);

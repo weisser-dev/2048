@@ -84,10 +84,10 @@ public class ScorePanel extends JPanel {
 				+ "</b></html>");
 	}
 
-	public void setScore(String score) {
-		this.score = Integer.valueOf(score);
-		this.labelScore.setText("<html> <body style=\"font-size:22px; margin-top: -3px \">" + score
-				+ "</html>");
+	public void setScore(Integer integer) {
+		this.score = Integer.valueOf(integer);
+		this.labelScore.setText("<html> <body style=\"font-size:22px; margin-top: -3px \">"
+				+ integer + "</html>");
 	}
 
 	public Integer getScore() {

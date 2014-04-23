@@ -11,7 +11,7 @@ public class NumberEntity {
 
 	public static final int FIELD_SIZE = 105;
 	public static final int BORDER_SIZE = 16;
-	public static final Font FONT = new Font("Segoe UI", Font.BOLD, 35);
+	public static final Font FONT = new Font("Segoe UI", Font.BOLD, 55);
 
 	private int x;
 	private int y;
@@ -76,19 +76,19 @@ public class NumberEntity {
 		int targetY = this.calculateY();
 
 		if (this.sx < targetX) {
-			++this.sx;
+			this.sx += 11;
 			moved = true;
 		}
 		if (this.sx > targetX) {
-			--this.sx;
+			this.sx -= 11;
 			moved = true;
 		}
 		if (this.sy < targetY) {
-			++this.sy;
+			this.sy += 11;
 			moved = true;
 		}
 		if (this.sy > targetY) {
-			--this.sy;
+			this.sy -= 11;
 			moved = true;
 		}
 
