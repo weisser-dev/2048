@@ -29,6 +29,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	private ScoreGroupPanel panelScore;
 	private GameOverPanel gameOverPanel;
 	private int score;
+	private int moveCount = 0;
 
 	public GamePanel(ScoreGroupPanel panelScore) {
 		this.panelScore = panelScore;
@@ -116,17 +117,22 @@ public class GamePanel extends JPanel implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		if ((e.getKeyCode() == KeyEvent.VK_LEFT) || (e.getKeyCode() == KeyEvent.VK_RIGHT)
 				|| (e.getKeyCode() == KeyEvent.VK_UP) || (e.getKeyCode() == KeyEvent.VK_DOWN)) {
-
-			this.moveEntity(e);
+			this.moveCount = 0;
+			int tempScore = this.score;
+			this.moveEntity(e, this.moveCount);
 			this.doAddition(e);
-			this.moveEntity(e);
-			this.moveEntity(e);
+			if (this.score > tempScore) {
+				this.moveCount++;
+			}
+			this.moveEntity(e, this.moveCount);
+
 			new MoveThread(this).start();
+
 		}
 
 	}
 
-	private void moveEntity(KeyEvent e) {
+	private void moveEntity(KeyEvent e, int moveCount) {
 		boolean moved = false;
 
 		do {
@@ -157,6 +163,7 @@ public class GamePanel extends JPanel implements KeyListener {
 							.getY() > 0)))) {
 				numberEntity.setX(numberEntity.getX() + x);
 				numberEntity.setY(numberEntity.getY() + y);
+				this.moveCount++;
 				moved = true;
 			}
 		}
@@ -165,7 +172,6 @@ public class GamePanel extends JPanel implements KeyListener {
 	public boolean isGameOver() {
 		boolean isGameOver = false;
 		if (this.listEntities.size() >= 16) {
-			System.out.println(this.listEntities.size());
 			for (int x = 0; x <= 3; x++) {
 				for (int y = 0; y < 3; y++) {
 					NumberEntity currentEntity = this.getEntityAt(x, y);
@@ -298,7 +304,7 @@ public class GamePanel extends JPanel implements KeyListener {
 			int value;
 			int x = 0;
 			int y = 0;
-			if (generator.nextInt(100) < 66) {
+			if (generator.nextInt(100) < 75) {
 				value = 2;
 			} else {
 				value = 4;
@@ -355,6 +361,14 @@ public class GamePanel extends JPanel implements KeyListener {
 	 */
 	public ScoreGroupPanel getScoreGroupPanel() {
 		return this.panelScore;
+	}
+
+	public int getMoveCount() {
+		return this.moveCount;
+	}
+
+	public void setMoveCount(int moveCount) {
+		this.moveCount = moveCount;
 	}
 
 	/**
