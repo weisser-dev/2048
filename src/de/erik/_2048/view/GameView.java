@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import de.erik._2048.images.ResourceLoader;
 import de.erik._2048.model.GameConstants;
 import de.erik._2048.view.components.GameButton;
 import de.erik._2048.view.components.GamePanel;
@@ -143,6 +144,8 @@ public class GameView extends javax.swing.JFrame {
 
 	private void config() {
 		this.setTitle("2048_-_V1.0a");
+		this.setIconImage(ResourceLoader.getImage("icon.png").getImage());
+
 		this.configJLabel();
 
 		this.getContentPane().setBackground(GameConstants.COLOR_background_gameView);
