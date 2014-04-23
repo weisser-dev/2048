@@ -7,7 +7,8 @@ import java.awt.geom.Rectangle2D;
 
 public class NumberEntity {
 
-	public static final int FIELD_SIZE = 105;
+	public static final int CELL_SIZE = 105;
+
 	public static final int BORDER_SIZE = 16;
 	public static final Font FONT = new Font("Segoe UI", Font.BOLD, 55);
 
@@ -16,10 +17,15 @@ public class NumberEntity {
 	private int sx;
 	private int sy;
 
+	private int size;
+	private float ssize;
+
 	private int value;
 	private boolean alive;
 
 	private Color background;
+
+	private boolean sizeBump;
 
 	public NumberEntity(int x, int y, int value) {
 		this.x = x;
@@ -27,6 +33,10 @@ public class NumberEntity {
 		this.alive = true;
 		this.sx = this.calculateX();
 		this.sy = this.calculateY();
+
+		this.size = NumberEntity.CELL_SIZE;
+		this.ssize = 0;
+		this.sizeBump = false;
 
 		this.updateValue(value);
 	}
@@ -46,8 +56,11 @@ public class NumberEntity {
 
 	public void paint(Graphics2D g) {
 
+		int offset = (NumberEntity.CELL_SIZE / 2) - ((int) (this.ssize / 2));
 		g.setColor(this.background);
-		g.fillRoundRect(this.sx, this.sy, 105, 105, 10, 10);
+		g.fillRoundRect(this.sx + offset, this.sy + offset, (int) this.ssize, (int) this.ssize, 10,
+				10);
+
 		if (this.value <= 4) {
 			g.setColor(GameConstants.COLOR_NUMBER_ENTITY_FONT1);
 		} else {
@@ -58,8 +71,9 @@ public class NumberEntity {
 			g.setFont(NumberEntity.FONT);
 			String text = String.valueOf(this.value);
 			Rectangle2D textBounds = g.getFontMetrics().getStringBounds(text, g);
-			g.drawString(text, (int) (this.sx + ((105 / 2) - textBounds.getCenterX())),
-					(int) (this.sy + ((105 / 2) - textBounds.getCenterY())));
+			g.drawString(text,
+					(int) (this.sx + ((NumberEntity.CELL_SIZE / 2) - textBounds.getCenterX())),
+					(int) (this.sy + ((NumberEntity.CELL_SIZE / 2) - textBounds.getCenterY())));
 		}
 	}
 	public boolean updatePosition() {
@@ -85,6 +99,25 @@ public class NumberEntity {
 			moved = true;
 		}
 
+		if (this.sizeBump) {
+			if (this.ssize < 120) {
+				this.ssize += 0.3f;
+				moved = true;
+			} else {
+				this.sizeBump = false;
+				moved = true;
+			}
+		} else {
+			if (this.ssize < this.size) {
+				this.ssize += 0.3f;
+				moved = true;
+			}
+			if (this.ssize > this.size) {
+				this.ssize -= 0.3f;
+				moved = true;
+			}
+		}
+
 		return moved;
 	}
 
@@ -92,7 +125,7 @@ public class NumberEntity {
 	 * @return
 	 */
 	private int calculateX() {
-		return (this.x * (NumberEntity.FIELD_SIZE + NumberEntity.BORDER_SIZE))
+		return (this.x * (NumberEntity.CELL_SIZE + NumberEntity.BORDER_SIZE))
 				+ NumberEntity.BORDER_SIZE;
 	}
 
@@ -100,7 +133,7 @@ public class NumberEntity {
 	 * @return
 	 */
 	private int calculateY() {
-		return (this.y * (NumberEntity.FIELD_SIZE + NumberEntity.BORDER_SIZE))
+		return (this.y * (NumberEntity.CELL_SIZE + NumberEntity.BORDER_SIZE))
 				+ NumberEntity.BORDER_SIZE;
 	}
 
@@ -124,8 +157,19 @@ public class NumberEntity {
 		return this.value;
 	}
 
+	/**
+	 * @param size the size to set
+	 */
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	/**
+	 * @param value
+	 */
 	public void updateValue(int value) {
 		this.value = value;
+		this.sizeBump = true;
 
 		switch (this.value) {
 			case 2:

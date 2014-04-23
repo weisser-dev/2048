@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 import de.erik._2048.model.GameConstants;
 import de.erik._2048.model.NumberEntity;
-import de.erik._2048.threading.MoveThread;
+import de.erik._2048.threading.UpdateThread;
 
 public class GamePanel extends JPanel implements KeyListener {
 
@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	private ScoreGroupPanel panelScore;
 	private GameOverPanel gameOverPanel;
 	private int score;
-	private int moveCount = 0;
+	private int elementsChanged = 0;
 
 	public GamePanel(ScoreGroupPanel panelScore) {
 		this.panelScore = panelScore;
@@ -55,16 +55,18 @@ public class GamePanel extends JPanel implements KeyListener {
 		for (int x = 0; x < 4; x++) {
 			for (int y = 0; y < 4; y++) {
 				this.emptyEntities.add(new NumberEntity(x, y, 0));
-
 			}
 		}
 
+		new UpdateThread(this, null);
 	}
+
 	public void build() {
 		this.setLayout(null);
 		this.add(this.gameOverPanel);
 
 	}
+
 	@Override
 	public void paint(Graphics go) {
 		Graphics2D g = (Graphics2D) go;
@@ -113,20 +115,51 @@ public class GamePanel extends JPanel implements KeyListener {
 		return null;
 	}
 
+	/**
+	 * 
+	 */
+	public void addNewEntities() {
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {}
+
+		if (this.elementsChanged > 0) {
+			NumberEntity temp = this.generateNewEntity();
+			if (temp != null) {
+				this.listEntities.add(this.generateNewEntity());
+				if (this.isGameOver()) {
+					this.setGameOver(true);
+				}
+			} else if (this.isGameOver()) {
+				this.setGameOver(true);
+			}
+		}
+
+		new UpdateThread(this, null).start();
+	}
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if ((e.getKeyCode() == KeyEvent.VK_LEFT) || (e.getKeyCode() == KeyEvent.VK_RIGHT)
 				|| (e.getKeyCode() == KeyEvent.VK_UP) || (e.getKeyCode() == KeyEvent.VK_DOWN)) {
-			this.moveCount = 0;
+
+			this.elementsChanged = 0;
 			int tempScore = this.score;
-			this.moveEntity(e, this.moveCount);
+			this.moveEntity(e, this.elementsChanged);
 			this.doAddition(e);
 			if (this.score > tempScore) {
-				this.moveCount++;
+				this.elementsChanged++;
 			}
-			this.moveEntity(e, this.moveCount);
+			this.moveEntity(e, this.elementsChanged);
 
-			new MoveThread(this).start();
+			new UpdateThread(this, new Runnable() {
+
+				@Override
+				public void run() {
+					GamePanel.this.addNewEntities();
+				}
+
+			}).start();
 
 		}
 
@@ -163,12 +196,13 @@ public class GamePanel extends JPanel implements KeyListener {
 							.getY() > 0)))) {
 				numberEntity.setX(numberEntity.getX() + x);
 				numberEntity.setY(numberEntity.getY() + y);
-				this.moveCount++;
+				this.elementsChanged++;
 				moved = true;
 			}
 		}
 		return moved;
 	}
+
 	public boolean isGameOver() {
 		boolean isGameOver = false;
 		if (this.listEntities.size() >= 16) {
@@ -362,17 +396,5 @@ public class GamePanel extends JPanel implements KeyListener {
 	public ScoreGroupPanel getScoreGroupPanel() {
 		return this.panelScore;
 	}
-
-	public int getMoveCount() {
-		return this.moveCount;
-	}
-
-	public void setMoveCount(int moveCount) {
-		this.moveCount = moveCount;
-	}
-
-	/**
-	 * 
-	 */
 
 }

@@ -6,16 +6,19 @@ import java.util.List;
 import de.erik._2048.model.NumberEntity;
 import de.erik._2048.view.components.GamePanel;
 
-public class MoveThread extends Thread {
+public class UpdateThread extends Thread {
 
 	private GamePanel panel;
+	private Runnable callback;
 
-	public MoveThread(GamePanel panel) {
+	public UpdateThread(GamePanel panel, Runnable callback) {
 		this.panel = panel;
+		this.callback = callback;
 	}
 
 	@Override
 	public void run() {
+
 		while (true) {
 			boolean moved = false;
 			for (NumberEntity numberEntity : this.panel.getListEntities()) {
@@ -30,7 +33,7 @@ public class MoveThread extends Thread {
 			}
 			try {
 				this.panel.repaint();
-				Thread.sleep(2);
+				Thread.sleep(4);
 			} catch (InterruptedException e) {}
 		}
 
@@ -40,23 +43,10 @@ public class MoveThread extends Thread {
 				deadEntities.add(numberEntity);
 			}
 		}
-
 		this.panel.getListEntities().removeAll(deadEntities);
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {}
-		if (this.panel.getMoveCount() > 0) {
 
-			NumberEntity temp = this.panel.generateNewEntity();
-			if (temp != null) {
-				this.panel.getListEntities().add(this.panel.generateNewEntity());
-				if (this.panel.isGameOver()) {
-					this.panel.setGameOver(true);
-				}
-			} else if (this.panel.isGameOver()) {
-				this.panel.setGameOver(true);
-			}
+		if (this.callback != null) {
+			this.callback.run();
 		}
-		this.panel.repaint();
 	}
 }
