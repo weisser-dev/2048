@@ -33,7 +33,7 @@ public class UpdateThread extends Thread {
 			}
 			try {
 				this.panel.repaint();
-				Thread.sleep(4);
+				Thread.sleep(4, 5);
 			} catch (InterruptedException e) {}
 		}
 		this.panel.repaint();
