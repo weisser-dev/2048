@@ -28,6 +28,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	private List<NumberEntity> emptyEntities;
 	private ScoreGroupPanel panelScore;
 	private GameOverPanel gameOverPanel;
+	private KeyEvent lastKeyEvent;
 	private int score;
 	private int elementsChanged = 0;
 
@@ -142,7 +143,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		if ((e.getKeyCode() == KeyEvent.VK_LEFT) || (e.getKeyCode() == KeyEvent.VK_RIGHT)
 				|| (e.getKeyCode() == KeyEvent.VK_UP) || (e.getKeyCode() == KeyEvent.VK_DOWN)) {
-
+			this.lastKeyEvent = e;
 			this.elementsChanged = 0;
 			int tempScore = this.score;
 			this.moveEntity(e, this.elementsChanged);
@@ -156,6 +157,8 @@ public class GamePanel extends JPanel implements KeyListener {
 
 				@Override
 				public void run() {
+					GamePanel.this.moveEntity(GamePanel.this.lastKeyEvent,
+							GamePanel.this.elementsChanged);
 					GamePanel.this.addNewEntities();
 				}
 
