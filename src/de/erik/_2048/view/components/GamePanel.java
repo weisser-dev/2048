@@ -125,19 +125,19 @@ public class GamePanel extends JPanel implements KeyListener {
 
 		if (this.elementsChanged > 0) {
 			NumberEntity temp = this.generateNewEntity();
+
 			if (temp != null) {
 				this.listEntities.add(this.generateNewEntity());
-				if (this.isGameOver()) {
-					this.setGameOver(true);
-				}
-			} else if (this.isGameOver()) {
+
+			}
+			if (this.isGameOver()) {
 				this.setGameOver(true);
+
 			}
 		}
 
 		new UpdateThread(this, null).start();
 	}
-
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if ((e.getKeyCode() == KeyEvent.VK_LEFT) || (e.getKeyCode() == KeyEvent.VK_RIGHT)
@@ -276,7 +276,7 @@ public class GamePanel extends JPanel implements KeyListener {
 						currentEntity.setAlive(false);
 						belowEntity.updateValue(currentEntity.getValue() * 2);
 						belowEntity.setY(belowEntity.getY() - 1);
-						this.score += belowEntity.getValue();
+						this.score += belowEntity.getNewValue();
 					}
 				}
 			}
@@ -291,7 +291,7 @@ public class GamePanel extends JPanel implements KeyListener {
 						currentEntity.setAlive(false);
 						belowEntity.updateValue(currentEntity.getValue() * 2);
 						belowEntity.setY(belowEntity.getY() + 1);
-						this.score += belowEntity.getValue();
+						this.score += belowEntity.getNewValue();
 					}
 				}
 			}
@@ -306,7 +306,7 @@ public class GamePanel extends JPanel implements KeyListener {
 						currentEntity.setAlive(false);
 						belowEntity.updateValue(currentEntity.getValue() * 2);
 						belowEntity.setX(belowEntity.getX() - 1);
-						this.score += belowEntity.getValue();
+						this.score += belowEntity.getNewValue();
 					}
 				}
 			}
@@ -321,7 +321,7 @@ public class GamePanel extends JPanel implements KeyListener {
 						currentEntity.setAlive(false);
 						belowEntity.updateValue(currentEntity.getValue() * 2);
 						belowEntity.setX(belowEntity.getX() + 1);
-						this.score += belowEntity.getValue();
+						this.score += belowEntity.getNewValue();
 					}
 				}
 			}

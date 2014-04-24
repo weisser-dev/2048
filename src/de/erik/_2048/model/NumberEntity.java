@@ -8,7 +8,6 @@ import java.awt.geom.Rectangle2D;
 public class NumberEntity {
 
 	public static final int CELL_SIZE = 105;
-
 	public static final int BORDER_SIZE = 16;
 	public static final Font FONT = new Font("Segoe UI", Font.BOLD, 55);
 
@@ -21,11 +20,13 @@ public class NumberEntity {
 	private float ssize;
 
 	private int value;
+	private int newValue;
 	private boolean alive;
+	private boolean moved;
+	private boolean sizeBump;
 
 	private Color background;
-
-	private boolean sizeBump;
+	private Color newBackground;
 
 	public NumberEntity(int x, int y, int value) {
 		this.x = x;
@@ -35,10 +36,12 @@ public class NumberEntity {
 		this.sy = this.calculateY();
 
 		this.size = NumberEntity.CELL_SIZE;
-		this.ssize = 0;
+		this.ssize = this.size;
 		this.sizeBump = false;
+		this.moved = false;
 
 		this.updateValue(value);
+		this.changeValue();
 	}
 	/**
 	 * @param alive the alive to set
@@ -61,13 +64,12 @@ public class NumberEntity {
 		g.fillRoundRect(this.sx + offset, this.sy + offset, (int) this.ssize, (int) this.ssize, 10,
 				10);
 
-		if (this.value <= 4) {
-			g.setColor(GameConstants.COLOR_NUMBER_ENTITY_FONT1);
-		} else {
-			g.setColor(GameConstants.COLOR_NUMBER_ENTITY_FONT2);
-		}
-
-		if (this.value > 0) {
+		if ((this.value > 0)) {
+			if (this.value <= 4) {
+				g.setColor(GameConstants.COLOR_NUMBER_ENTITY_FONT1);
+			} else {
+				g.setColor(GameConstants.COLOR_NUMBER_ENTITY_FONT2);
+			}
 			g.setFont(NumberEntity.FONT);
 			String text = String.valueOf(this.value);
 			Rectangle2D textBounds = g.getFontMetrics().getStringBounds(text, g);
@@ -77,48 +79,48 @@ public class NumberEntity {
 		}
 	}
 	public boolean updatePosition() {
-		boolean moved = false;
+		this.moved = false;
 
 		int targetX = this.calculateX();
 		int targetY = this.calculateY();
 
 		if (this.sx < targetX) {
 			this.sx += 11;
-			moved = true;
+			this.moved = true;
 		}
 		if (this.sx > targetX) {
 			this.sx -= 11;
-			moved = true;
+			this.moved = true;
 		}
 		if (this.sy < targetY) {
 			this.sy += 11;
-			moved = true;
+			this.moved = true;
 		}
 		if (this.sy > targetY) {
 			this.sy -= 11;
-			moved = true;
+			this.moved = true;
 		}
 
 		if (this.sizeBump) {
-			if (this.ssize < 120) {
-				this.ssize += 0.3f;
-				moved = true;
+			if (this.ssize < 115) {
+				this.ssize += 0.45f;
+				this.moved = true;
 			} else {
 				this.sizeBump = false;
-				moved = true;
+				this.moved = true;
 			}
 		} else {
 			if (this.ssize < this.size) {
-				this.ssize += 0.3f;
-				moved = true;
+				this.ssize += 0.45f;
+				this.moved = true;
 			}
 			if (this.ssize > this.size) {
-				this.ssize -= 0.3f;
-				moved = true;
+				this.ssize -= 0.45f;
+				this.moved = true;
 			}
 		}
 
-		return moved;
+		return this.moved;
 	}
 
 	/**
@@ -157,58 +159,67 @@ public class NumberEntity {
 		return this.value;
 	}
 
-	/**
-	 * @param size the size to set
-	 */
 	public void setSize(int size) {
 		this.size = size;
 	}
 
-	/**
-	 * @param value
-	 */
 	public void updateValue(int value) {
-		this.value = value;
+		this.newValue = value;
 		this.sizeBump = true;
-
-		switch (this.value) {
+		switch (this.newValue) {
 			case 2:
-				this.background = GameConstants.COLOR_VALUE_2;
+				this.newBackground = GameConstants.COLOR_VALUE_2;
 				break;
 			case 4:
-				this.background = GameConstants.COLOR_VALUE_4;
+				this.newBackground = GameConstants.COLOR_VALUE_4;
 				break;
 			case 8:
-				this.background = GameConstants.COLOR_VALUE_8;
+				this.newBackground = GameConstants.COLOR_VALUE_8;
 				break;
 			case 16:
-				this.background = GameConstants.COLOR_VALUE_16;
+				this.newBackground = GameConstants.COLOR_VALUE_16;
 				break;
 			case 32:
-				this.background = GameConstants.COLOR_VALUE_32;
+				this.newBackground = GameConstants.COLOR_VALUE_32;
 				break;
 			case 64:
-				this.background = GameConstants.COLOR_VALUE_64;
+				this.newBackground = GameConstants.COLOR_VALUE_64;
 				break;
 			case 128:
-				this.background = GameConstants.COLOR_VALUE_128;
+				this.newBackground = GameConstants.COLOR_VALUE_128;
 				break;
 			case 256:
-				this.background = GameConstants.COLOR_VALUE_256;
+				this.newBackground = GameConstants.COLOR_VALUE_256;
 				break;
 			case 512:
-				this.background = GameConstants.COLOR_VALUE_512;
+				this.newBackground = GameConstants.COLOR_VALUE_512;
 				break;
 			case 1024:
-				this.background = GameConstants.COLOR_VALUE_1024;
+				this.newBackground = GameConstants.COLOR_VALUE_1024;
 				break;
 			case 2048:
-				this.background = GameConstants.COLOR_VALUE_2048;
+				this.newBackground = GameConstants.COLOR_VALUE_2048;
 				break;
 			default:
-				this.background = GameConstants.COLOR_VALUE_0;
+				this.newBackground = GameConstants.COLOR_VALUE_0;
 				break;
 		}
+	}
+
+	public void changeValue() {
+		if ((this.value != this.newValue) || (this.value == 0)) {
+
+			this.value = this.newValue;
+			this.background = this.newBackground;
+		}
+	}
+
+	public int getNewValue() {
+		return this.newValue;
+	}
+
+	public void setNewValue(int newValue) {
+		this.newValue = newValue;
 	}
 
 }

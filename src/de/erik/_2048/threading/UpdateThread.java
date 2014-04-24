@@ -36,15 +36,18 @@ public class UpdateThread extends Thread {
 				Thread.sleep(4);
 			} catch (InterruptedException e) {}
 		}
+		this.panel.repaint();
 
 		List<NumberEntity> deadEntities = new ArrayList<NumberEntity>();
 		for (NumberEntity numberEntity : this.panel.getListEntities()) {
 			if (!numberEntity.isAlive()) {
 				deadEntities.add(numberEntity);
+			} else {
+				numberEntity.changeValue();
 			}
 		}
 		this.panel.getListEntities().removeAll(deadEntities);
-
+		this.panel.repaint();
 		if (this.callback != null) {
 			this.callback.run();
 		}
